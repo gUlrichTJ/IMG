@@ -1,13 +1,16 @@
 package com.example.img.controleur;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.example.img.modele.AccesDistant;
 import com.example.img.modele.Profile;
 import com.example.img.outils.Serializer;
+import com.example.img.vue.CalculActivity;
 
 import org.json.JSONArray;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public final class Controle {
@@ -15,8 +18,10 @@ public final class Controle {
     private static Controle instance = null;
     private static Profile profile;
     private static String monFic = "saveprofil";
+    private static Context context;
     //private static AccesLocal accesLocal;
     private static AccesDistant accesDistant;
+    private ArrayList<Profile> lesProfiles = new ArrayList<Profile>();
 
     /**
      * Constructor privé
@@ -30,12 +35,16 @@ public final class Controle {
      * @return il retourne l'instance
      */
     public static final Controle getInstance(Context context) {
+        if (context != null) {
+            Controle.context = context;
+        }
         if (Controle.instance == null) {
             Controle.instance = new Controle();
             //accesLocal = new AccesLocal(context);
             accesDistant = new AccesDistant();
             //profile = accesLocal.recupDernier();
-            accesDistant.envoi("dernier", new JSONArray());
+//            accesDistant.envoi("dernier", new JSONArray());
+            accesDistant.envoi("tous", new JSONArray());
             //recupSerializable(context);
         }
         return Controle.instance;
@@ -50,9 +59,17 @@ public final class Controle {
      */
     public void creerProfile(int poids, int taille, int age, int sexe, Context context) {
         profile = new Profile(new Date(), poids, taille, age, sexe);
+        lesProfiles.add(profile);
+        //A quoi ressemble le formatage de cette date?
+        Log.d("date", "****************" + (new Date()));
         //accesLocal.ajout(profile);
         accesDistant.envoi("enreg", profile.convertToJSONArray());
         //Serializer.serialize(monFic, profile, context);
+    }
+
+    public void setProfile(Profile profile) {
+        Controle.profile = profile;
+        ((CalculActivity)context).recupProfile();
     }
 
     /**
@@ -60,7 +77,8 @@ public final class Controle {
      * @return
      */
     public float getImg() {
-        return profile.getImg();
+//        return profile.getImg();
+        return lesProfiles.get(getLesProfiles().size() - 1).getImg();
     }
 
     /**
@@ -68,7 +86,8 @@ public final class Controle {
      * @return
      */
     public String getMessage() {
-        return profile.getMessage();
+//        return profile.getMessage();
+        return lesProfiles.get(getLesProfiles().size() - 1).getMessage();
     }
 
     /**
@@ -109,5 +128,13 @@ public final class Controle {
         } else {
             return profile.getSexe();
         }
+    }
+
+    public ArrayList<Profile> getLesProfiles() {
+        return lesProfiles;
+    }
+
+    public void setLesProfiles(ArrayList<Profile> lesProfiles) {
+        this.lesProfiles = lesProfiles;
     }
 }

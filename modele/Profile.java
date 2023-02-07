@@ -1,5 +1,7 @@
 package com.example.img.modele;
 
+import com.example.img.outils.MesOutils;
+
 import org.json.JSONArray;
 
 import java.io.Serializable;
@@ -97,7 +99,7 @@ public class Profile implements Serializable {
      */
     public JSONArray convertToJSONArray() {
         List laListe = new ArrayList<>();
-        laListe.add(dateMesure);
+        laListe.add(MesOutils.convertDateToString(String.valueOf(dateMesure)));
         laListe.add(poids);
         laListe.add(taille);
         laListe.add(age);

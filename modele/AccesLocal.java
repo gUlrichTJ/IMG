@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.example.img.outils.MesOutils;
 import com.example.img.outils.MySQLiteOpenHelper;
 
 import java.util.Date;
@@ -48,7 +49,7 @@ public class AccesLocal {
         Cursor cursor = bd.rawQuery(req, null);
         cursor.moveToLast();
         if (!cursor.isAfterLast()) {
-            Date date = new Date();
+            Date date = MesOutils.convertStringToDate(cursor.getString(0));
             Integer poids = cursor.getInt(1);
             Integer taille = cursor.getInt(2);
             Integer age = cursor.getInt(3);
