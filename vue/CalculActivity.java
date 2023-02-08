@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.img.R;
 import com.example.img.controleur.Controle;
+import com.example.img.outils.MesOutils;
 
 public class CalculActivity extends AppCompatActivity {
 
@@ -105,7 +106,7 @@ public class CalculActivity extends AppCompatActivity {
                 imgSmiley.setImageResource(R.drawable.gros);
             }
         }
-        lblIMG.setText(String.format("%.01f", img) + " IMG " + message);
+        lblIMG.setText(MesOutils.format2Decimal(img) + " IMG " + message);
     }
 
     /**

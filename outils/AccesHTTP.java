@@ -12,6 +12,8 @@ import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.impl.cli
 import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.message.BasicNameValuePair;
 import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.util.EntityUtils;
 
+import org.json.JSONException;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -66,6 +68,10 @@ public class AccesHTTP extends AsyncTask<String, Integer, Long> {
 
     @Override
     protected void onPostExecute(Long result) {
-        delegate.processFinish(ret.toString());
+        try {
+            delegate.processFinish(ret.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

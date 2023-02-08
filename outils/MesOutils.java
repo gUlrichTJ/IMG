@@ -38,9 +38,18 @@ public abstract class MesOutils {
      * @param uneDate
      * @return
      */
-    public static String convertDateToString(String uneDate) {
+    public static String convertDateToString(String  uneDate) {
         SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         return date.format(uneDate);
+    }
+
+    /**
+     * Retourne un float au format String avec un chiffre après la virgule
+     * @param valeur
+     * @return
+     */
+    public static String format2Decimal(float valeur) {
+        return String.format("%.01f", valeur);
     }
 
 }
