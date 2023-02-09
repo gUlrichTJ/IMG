@@ -6,7 +6,6 @@ import android.util.Log;
 import com.example.img.modele.AccesDistant;
 import com.example.img.modele.Profile;
 import com.example.img.outils.Serializer;
-import com.example.img.vue.CalculActivity;
 
 import org.json.JSONArray;
 
@@ -54,22 +53,31 @@ public final class Controle {
      * Création du profile
      * @param poids
      * @param taille en cm
-     * @param age
+     * @param age .
      * @param sexe 1 pour homme et 0 pour femme
      */
     public void creerProfile(int poids, int taille, int age, int sexe, Context context) {
-        profile = new Profile(new Date(), poids, taille, age, sexe);
-        lesProfiles.add(profile);
+        Profile unProfile = new Profile(new Date(), poids, taille, age, sexe);
+        lesProfiles.add(unProfile);
         //A quoi ressemble le formatage de cette date?
         Log.d("date", "****************" + (new Date()));
         //accesLocal.ajout(profile);
-        accesDistant.envoi("enreg", profile.convertToJSONArray());
+        accesDistant.envoi("enreg", unProfile.convertToJSONArray());
         //Serializer.serialize(monFic, profile, context);
+    }
+
+    /**
+     * Cette méthode permet de supprimer le profil dans la collection et dans la base distante
+     * @param profile
+     */
+    public void delProfile(Profile profile) {
+        accesDistant.envoi("del", profile.convertToJSONArray());
+        lesProfiles.remove(profile);
     }
 
     public void setProfile(Profile profile) {
         Controle.profile = profile;
-        ((CalculActivity)context).recupProfile();
+        //((CalculActivity)context).recupProfile();
     }
 
     /**

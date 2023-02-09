@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Profile implements Serializable {
+public class Profile implements Serializable, Comparable {
 
     private static final int minFemme = 15; //Maigre si en dessous
     private static final int maxFemme = 30; //Grosse si au dessus
@@ -105,5 +105,10 @@ public class Profile implements Serializable {
         laListe.add(age);
         laListe.add(sexe);
         return new JSONArray(laListe);
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return dateMesure.compareTo(((Profile)o).getDateMesure());
     }
 }

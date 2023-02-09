@@ -9,6 +9,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.img.R;
+import com.example.img.controleur.Controle;
 import com.example.img.modele.Profile;
 import com.example.img.outils.MesOutils;
 
@@ -18,10 +19,14 @@ public class HistoListAdapter extends BaseAdapter {
 
     private ArrayList<Profile> lesProfiles;
     private LayoutInflater inflater;
+    private Controle controle;
+    private Context context;
 
     public HistoListAdapter(Context context, ArrayList<Profile> lesProfiles) {
         this.lesProfiles = lesProfiles;
+        this.context = context;
         this.inflater = LayoutInflater.from(context);
+        this.controle = Controle.getInstance(null);
     }
 
     /**
@@ -84,6 +89,36 @@ public class HistoListAdapter extends BaseAdapter {
         holder.txtListDate.setText(MesOutils.convertDateToString(String.valueOf(lesProfiles.get(i).getDateMesure())));
         holder.txtListIMG.setText(MesOutils.format2Decimal(lesProfiles.get(i).getImg()));
         holder.btnListSuppr.setTag(i);
+        //Clic sur la croix pour supprimer le profil enrégistré
+        holder.btnListSuppr.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                int position = (int) v.getTag();
+                //Demande de suppression au controleur
+                controle.delProfile(lesProfiles.get(position));
+                //Raffraichir la liste
+                notifyDataSetChanged();
+            }
+        });
+
+        holder.txtListDate.setTag(i);
+        //Clic sur le reste de la ligne
+        holder.txtListDate.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                int position = (int) v.getTag();
+                //Demande de l'affichage du profil dans CalculActivity
+                ((HistoActivity)context).afficheProfile(lesProfiles.get(position));
+            }
+        });
+
+        holder.txtListIMG.setTag(i);
+        //Clic sur le reste de la ligne
+        holder.txtListIMG.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                int position = (int) v.getTag();
+                //Demande de l'affichage du profil dans CalculActivity
+                ((HistoActivity)context).afficheProfile(lesProfiles.get(position));
+            }
+        });
         return view;
     }
 

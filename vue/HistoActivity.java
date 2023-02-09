@@ -13,6 +13,7 @@ import com.example.img.controleur.Controle;
 import com.example.img.modele.Profile;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class HistoActivity extends AppCompatActivity {
 
@@ -33,6 +34,7 @@ public class HistoActivity extends AppCompatActivity {
         ((ImageButton)findViewById(R.id.btnRetourDeHisto)).setOnClickListener(new ImageButton.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(HistoActivity.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }
         });
@@ -40,11 +42,23 @@ public class HistoActivity extends AppCompatActivity {
 
     private void creerListe() {
         ArrayList<Profile> lesProfiles = controle.getLesProfiles();
+        Collections.sort(lesProfiles, Collections.reverseOrder());
         if (lesProfiles != null) {
             ListView lstHisto = (ListView) findViewById(R.id.lstHisto);
             HistoListAdapter adapter = new HistoListAdapter(this, lesProfiles);
             lstHisto.setAdapter(adapter);
         }
+    }
+
+    /**
+     * Demande d'afficher le profil dans CalculActivity
+     * @param profile
+     */
+    public void afficheProfile(Profile profile) {
+        controle.setProfile(profile);
+        Intent intent = new Intent(HistoActivity.this, CalculActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
 }

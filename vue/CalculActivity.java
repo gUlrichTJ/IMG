@@ -53,7 +53,7 @@ public class CalculActivity extends AppCompatActivity {
         this.controle = Controle.getInstance(this);
         ecouteCalcul();
         ecouteRetourMenu();
-        //recupProfile();
+        recupProfile();
     }
 
     /**
@@ -122,7 +122,8 @@ public class CalculActivity extends AppCompatActivity {
             if (controle.getSexe() == 1) {
                 rdHomme.setChecked(true);
             }
-
+            //Remettre à vide le profil
+            controle.setProfile(null);
             //Simule le clic sur le bouton calculer
             //((Button)findViewById(R.id.btnCalc)).performClick();
         }
@@ -135,6 +136,7 @@ public class CalculActivity extends AppCompatActivity {
         ((ImageButton)findViewById(R.id.btnRetourDeCalcul)).setOnClickListener(new ImageButton.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(CalculActivity.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }
         });
